@@ -9,6 +9,6 @@ public class AddPersonScene : MonoBehaviour
     public void MoveToLevel1()
     {
         Debug.Log("Change scene");
-        SceneManager.LoadScene("NewScene", LoadSceneMode.Single);
+        SceneManager.LoadScene("Square", LoadSceneMode.Single);
     }
 }
