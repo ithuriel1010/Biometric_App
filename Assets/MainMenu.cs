@@ -13,4 +13,9 @@ public class MainMenu : MonoBehaviour
 
         //SceneManager.LoadScene("AddPerson");
     }
+
+   public void Indentify()
+   {
+       SceneManager.LoadScene("IdentifySquare", LoadSceneMode.Single);
+   }
 }

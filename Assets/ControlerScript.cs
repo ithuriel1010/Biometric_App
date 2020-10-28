@@ -10,7 +10,8 @@ public class ControlerScript : MonoBehaviour
     private int order = 0;
     private string currentTime;
     private int numberOfLines = 0;
-
+    private float wholeTime;
+    private float[] timesBetweenPoints;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +57,7 @@ public class ControlerScript : MonoBehaviour
     public void CountWholeTime()
     {
         //Debug.Log("0: "+timesOfPoints[0]+" ostatnie: "+ timesOfPoints[order-1]);
-        float wholeTime = timesOfPoints[order-1] - timesOfPoints[0];
+        wholeTime = timesOfPoints[order-1] - timesOfPoints[0];
 
         Debug.Log((wholeTime));
     }
@@ -64,7 +65,7 @@ public class ControlerScript : MonoBehaviour
     public void CountTimeBetweenPoints()
     {
         var filteredTimes = timesOfPoints.Where(x => x != 0).ToArray();
-        float[] timesBetweenPoints = new float[filteredTimes.Length-1];
+        timesBetweenPoints = new float[filteredTimes.Length-1];
 
         for (int i = 0; i < filteredTimes.Length-1; i++)
         {
@@ -81,5 +82,29 @@ public class ControlerScript : MonoBehaviour
     public void NewLine()
     {
         numberOfLines++;
+    }
+
+    public void EndOfSquareLevel()
+    {
+        var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
+        MainControler.Instance.SquareUserData(orderOfPointsClicked, numberOfLines, wholeTime, timesBetweenPoints);
+    }
+    
+    public void EndOfCrossLevel()
+    {
+        var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
+        MainControler.Instance.CrossUserData(orderOfPointsClicked, wholeTime, timesBetweenPoints);
+    }
+    
+    public void EndOfSquareIdentification()
+    {
+        var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
+        MainControler.Instance.IdentificationSquare(orderOfPointsClicked, numberOfLines, wholeTime, timesBetweenPoints);
+    }
+    
+    public void EndOfCrossIdentification()
+    {
+        var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
+        MainControler.Instance.IdentificationCross(orderOfPointsClicked, wholeTime, timesBetweenPoints);
     }
 }

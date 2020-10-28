@@ -45,7 +45,35 @@ public class Point : MonoBehaviour
     {
         _controlerScript.CountWholeTime();
         _controlerScript.CountTimeBetweenPoints();
+        _controlerScript.EndOfSquareLevel();
         //Debug.Log("Change scene");
         SceneManager.LoadScene("Tap", LoadSceneMode.Single);
+    }
+    
+    public void MoveToIdentifyLevel2()
+    {
+        _controlerScript.CountWholeTime();
+        _controlerScript.CountTimeBetweenPoints();
+        _controlerScript.EndOfSquareIdentification();
+        //Debug.Log("Change scene");
+        SceneManager.LoadScene("IdentifyTap", LoadSceneMode.Single);
+    }
+
+    public void EndAddingPerson()
+    {
+        _controlerScript.CountWholeTime();
+        _controlerScript.CountTimeBetweenPoints();
+        _controlerScript.EndOfCrossLevel();
+        
+        SceneManager.LoadScene("mainScreen", LoadSceneMode.Single);
+    }
+
+    public void EndIdentification()
+    {
+        _controlerScript.CountWholeTime();
+        _controlerScript.CountTimeBetweenPoints();
+        _controlerScript.EndOfCrossIdentification();
+        
+        SceneManager.LoadScene("Result", LoadSceneMode.Single);
     }
 }

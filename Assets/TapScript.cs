@@ -21,4 +21,9 @@ public class TapScript : MonoBehaviour
     {
         SceneManager.LoadScene("Cross", LoadSceneMode.Single);
     }
+    
+    public void MoveToIdentifyLevel3()
+    {
+        SceneManager.LoadScene("IdentifyCross", LoadSceneMode.Single);
+    }
 }
