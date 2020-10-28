@@ -6,15 +6,18 @@
     <e p="C:\Users\ithur\Biometria" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="AddPersonScene.cs" t="Include" />
-        <e p="ControlerScript.cs" t="Include" />
-        <e p="LineCreator.cs" t="Include" />
-        <e p="LineDrawer.cs" t="Include" />
-        <e p="MainControler.cs" t="Include" />
-        <e p="MainMenu.cs" t="Include" />
-        <e p="Point.cs" t="Include" />
-        <e p="ResultScript.cs" t="Include" />
-        <e p="TapScript.cs" t="Include" />
+        <e p="Scripts" t="Include">
+          <e p="AddPersonScene.cs" t="Include" />
+          <e p="ControlerScript.cs" t="Include" />
+          <e p="LineCreator.cs" t="Include" />
+          <e p="LineDrawer.cs" t="Include" />
+          <e p="MainControler.cs" t="Include" />
+          <e p="MainMenu.cs" t="Include" />
+          <e p="Point.cs" t="Include" />
+          <e p="ResultScript.cs" t="Include" />
+          <e p="SqlHelper.cs" t="Include" />
+          <e p="TapScript.cs" t="Include" />
+        </e>
       </e>
       <e p="Biometria.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />

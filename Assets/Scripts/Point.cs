@@ -64,7 +64,7 @@ public class Point : MonoBehaviour
         _controlerScript.CountWholeTime();
         _controlerScript.CountTimeBetweenPoints();
         _controlerScript.EndOfCrossLevel();
-        
+
         SceneManager.LoadScene("mainScreen", LoadSceneMode.Single);
     }
 

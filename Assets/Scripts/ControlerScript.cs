@@ -39,7 +39,7 @@ public class ControlerScript : MonoBehaviour
                 pointsOrder[order] = name;
                 timesOfPoints[order] = Time.time;
                 
-                Debug.Log(timesOfPoints[order]);
+                //Debug.Log(timesOfPoints[order]);
                 order++;
 
             }
@@ -49,7 +49,7 @@ public class ControlerScript : MonoBehaviour
             pointsOrder[order] = name;
             timesOfPoints[order] = Time.time;
                 
-            Debug.Log(timesOfPoints[order]);
+            //Debug.Log(timesOfPoints[order]);
             order++;
         }
     }
@@ -59,7 +59,7 @@ public class ControlerScript : MonoBehaviour
         //Debug.Log("0: "+timesOfPoints[0]+" ostatnie: "+ timesOfPoints[order-1]);
         wholeTime = timesOfPoints[order-1] - timesOfPoints[0];
 
-        Debug.Log((wholeTime));
+        //Debug.Log((wholeTime));
     }
 
     public void CountTimeBetweenPoints()
@@ -94,6 +94,7 @@ public class ControlerScript : MonoBehaviour
     {
         var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
         MainControler.Instance.CrossUserData(orderOfPointsClicked, wholeTime, timesBetweenPoints);
+        MainControler.Instance.AddToDatabase();
     }
     
     public void EndOfSquareIdentification()

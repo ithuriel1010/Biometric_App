@@ -9,7 +9,7 @@ public class ResultScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string result = MainControler.Instance.CountPrecentage();
+        string result = MainControler.Instance.Check();
         text.text = result;
     }
 
