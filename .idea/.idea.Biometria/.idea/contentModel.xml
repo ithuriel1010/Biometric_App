@@ -9,6 +9,7 @@
         <e p="Scripts" t="Include">
           <e p="AddPersonScene.cs" t="Include" />
           <e p="ControlerScript.cs" t="Include" />
+          <e p="DatabaseObject.cs" t="Include" />
           <e p="LineCreator.cs" t="Include" />
           <e p="LineDrawer.cs" t="Include" />
           <e p="MainControler.cs" t="Include" />
