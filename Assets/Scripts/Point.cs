@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Point : MonoBehaviour
 {
-    string[] pointsOrder { get; set; } = new string[15];
+    string[] pointsOrder { get; set; } = new string[7];
     public int order = 0;
     private bool onEnter = false;
 

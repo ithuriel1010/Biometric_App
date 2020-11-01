@@ -256,29 +256,34 @@ public class MainControler : MonoBehaviour
         
         //float[] timeDifference = new float[possibleObjects.Count];
 
-        foreach (var possiblePerson in possibleObjects)
+        if (possibleObjects.Count != 0)
         {
-            possiblePerson.timeDifferenceSquare = Mathf.Abs(totalTimeSquareIdentification - possiblePerson.totalTimeSquare);
-            possiblePerson.timeDifferenceCross = Mathf.Abs(totalTimeCrossIdentification - possiblePerson.totalTimeCross);
-        }
+            foreach (var possiblePerson in possibleObjects)
+            {
+                possiblePerson.timeDifferenceSquare = Mathf.Abs(totalTimeSquareIdentification - possiblePerson.totalTimeSquare);
+                possiblePerson.timeDifferenceCross = Mathf.Abs(totalTimeCrossIdentification - possiblePerson.totalTimeCross);
+            }
+            
+            DatabaseObject lowestSquare = possibleObjects[0];
+            DatabaseObject lowestCross = possibleObjects[0];
         
-        DatabaseObject lowestSquare = possibleObjects[0];
-        DatabaseObject lowestCross = possibleObjects[0];
+            foreach(var x in possibleObjects){
+                if(x.timeDifferenceSquare < lowestSquare.timeDifferenceSquare)
+                    lowestSquare = x;
+            }
         
-        foreach(var x in possibleObjects){
-            if(x.timeDifferenceSquare < lowestSquare.timeDifferenceSquare)
-                lowestSquare = x;
-        }
-        
-        foreach(var x in possibleObjects){
-            if(x.timeDifferenceCross < lowestCross.timeDifferenceCross)
-                lowestCross = x;
-        }
+            foreach(var x in possibleObjects){
+                if(x.timeDifferenceCross < lowestCross.timeDifferenceCross)
+                    lowestCross = x;
+            }
 
-        if (lowestSquare == lowestCross)
-        {
-            result = lowestCross.userName;
+            if (lowestSquare == lowestCross)
+            {
+                result = lowestCross.userName;
+            }
         }
+        
+        
         
         return result;
     }

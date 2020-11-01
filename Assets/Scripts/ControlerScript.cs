@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ControlerScript : MonoBehaviour
 {
-    string[] pointsOrder { get; set; } = new string[15];
+    string[] pointsOrder { get; set; } = new string[7];
     private float[] timesOfPoints { get; set; } = new float[15];
     private int order = 0;
     private string currentTime;
@@ -92,7 +92,7 @@ public class ControlerScript : MonoBehaviour
     
     public void EndOfCrossLevel()
     {
-        var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
+        var orderOfPointsClicked = pointsOrder;
         MainControler.Instance.CrossUserData(orderOfPointsClicked, wholeTime, timesBetweenPoints);
         MainControler.Instance.AddToDatabase();
     }
@@ -105,7 +105,7 @@ public class ControlerScript : MonoBehaviour
     
     public void EndOfCrossIdentification()
     {
-        var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
+        var orderOfPointsClicked = pointsOrder;
         MainControler.Instance.IdentificationCross(orderOfPointsClicked, wholeTime, timesBetweenPoints);
     }
 }
