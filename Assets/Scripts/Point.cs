@@ -61,9 +61,9 @@ public class Point : MonoBehaviour
 
     public void EndAddingPerson()
     {
-        _controlerScript.CountWholeTime();
-        _controlerScript.CountTimeBetweenPoints();
-        _controlerScript.EndOfCrossLevel();
+         _controlerScript.CountWholeTime();
+         _controlerScript.CountTimeBetweenPoints();
+         _controlerScript.EndOfCrossLevel();
 
         SceneManager.LoadScene("mainScreen", LoadSceneMode.Single);
     }

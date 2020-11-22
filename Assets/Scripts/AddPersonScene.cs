@@ -8,6 +8,13 @@ using UnityEngine.UI;
 public class AddPersonScene : MonoBehaviour
 {
     private InputField _field;
+
+    private void Start()
+    { 
+        //TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, true);
+        _field = FindObjectOfType<InputField>();
+        _field.text = Application.persistentDataPath;
+    }
     public void MoveToLevel1()
     {
         _field = FindObjectOfType<InputField>();
@@ -15,5 +22,6 @@ public class AddPersonScene : MonoBehaviour
         MainControler.Instance.GetName(name);
         Debug.Log("Change scene");
         SceneManager.LoadScene("Square", LoadSceneMode.Single);
+
     }
 }

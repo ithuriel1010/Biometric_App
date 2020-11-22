@@ -18,7 +18,7 @@ public class MainControler : MonoBehaviour
     private string[] orderOfPointsSquare;
     private int numberOfLinesSquare;
     private float totalTimeSquare;
-    private float[] partialTimesSquare;
+    private float[] partialTimesSquare; 
     
     private string[] orderOfPointsCross;
     private float totalTimeCross;
@@ -111,10 +111,10 @@ public class MainControler : MonoBehaviour
         }
     }
 
-    private string database = "test10";
+    private string database = "test13";
     public void AddToDatabase()
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/" + database;
+        string connection = GetDBPath();
 		
         // Open connection
         IDbConnection dbcon = new SqliteConnection(connection);
@@ -140,10 +140,14 @@ public class MainControler : MonoBehaviour
         dbcon.Close();
 
     }
+    
+    //private string GetDBPath() => "URI=file:" + "/Download" + "/" + database;
+    
+    private string GetDBPath() => "URI=file:" + Application.persistentDataPath + "/" + database;
 
     public void ReadFromDatabase()
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/" + database;
+        string connection = GetDBPath();
         string nameResulted="No such person";
         // Open connection
         IDbConnection dbcon = new SqliteConnection(connection);

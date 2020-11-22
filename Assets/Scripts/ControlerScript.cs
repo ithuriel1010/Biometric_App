@@ -57,7 +57,7 @@ public class ControlerScript : MonoBehaviour
     public void CountWholeTime()
     {
         //Debug.Log("0: "+timesOfPoints[0]+" ostatnie: "+ timesOfPoints[order-1]);
-        wholeTime = timesOfPoints[order-1] - timesOfPoints[0];
+        wholeTime = (timesOfPoints[order-1] - timesOfPoints[0]);
 
         //Debug.Log((wholeTime));
     }
@@ -88,6 +88,7 @@ public class ControlerScript : MonoBehaviour
     {
         var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
         MainControler.Instance.SquareUserData(orderOfPointsClicked, numberOfLines, wholeTime, timesBetweenPoints);
+        Debug.Log(timesOfPoints[2]);
     }
     
     public void EndOfCrossLevel()
@@ -95,6 +96,8 @@ public class ControlerScript : MonoBehaviour
         var orderOfPointsClicked = pointsOrder;
         MainControler.Instance.CrossUserData(orderOfPointsClicked, wholeTime, timesBetweenPoints);
         MainControler.Instance.AddToDatabase();
+        Debug.Log(timesOfPoints[2]);
+
     }
     
     public void EndOfSquareIdentification()
