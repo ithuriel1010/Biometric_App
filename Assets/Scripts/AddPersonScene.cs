@@ -13,7 +13,6 @@ public class AddPersonScene : MonoBehaviour
     { 
         //TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, true);
         _field = FindObjectOfType<InputField>();
-        _field.text = Application.persistentDataPath;
     }
     public void MoveToLevel1()
     {
