@@ -5,25 +5,52 @@ using UnityEngine.SceneManagement;
 
 public class TapScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private float firstTimeTap = 0.0f;
+    private float secondTimeTap = 0.0f;
+    private bool thirdTimeTap = false;
+
+    private float firstHalfTime = 0.0f;
+    private float secondHalfTime = 0.0f;
+
+    private ControlerScript _controlerScript;
+
+    public void Start()
     {
-        
+        _controlerScript = FindObjectOfType<ControlerScript>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SaveTimeOfTap()
     {
-        
+        if(firstTimeTap == 0.0f) {
+            firstTimeTap = Time.time;
+        } else if (secondTimeTap == 0.0f) {
+            secondTimeTap = Time.time;
+        } else if (thirdTimeTap == false) {
+            secondHalfTime = Time.time - secondTimeTap;
+            firstHalfTime = secondTimeTap - firstTimeTap;
+            
+            thirdTimeTap = true;
+        }
     }
 
     public void MoveToLevel3()
     {
-        SceneManager.LoadScene("Cross", LoadSceneMode.Single);
+        Debug.Log(thirdTimeTap);
+        Debug.Log(firstHalfTime);
+        Debug.Log(secondHalfTime);
+        if(thirdTimeTap == true)
+        {
+            _controlerScript.TapUserData(firstHalfTime, secondHalfTime, Time.time - firstTimeTap);
+            SceneManager.LoadScene("Cross", LoadSceneMode.Single);
+        }
     }
     
     public void MoveToIdentifyLevel3()
     {
-        SceneManager.LoadScene("IdentifyCross", LoadSceneMode.Single);
+        if (thirdTimeTap == true)
+        {
+            _controlerScript.TapIdentification(firstHalfTime, secondHalfTime, Time.time - firstTimeTap);
+            SceneManager.LoadScene("IdentifyCross", LoadSceneMode.Single);
+        }
     }
 }

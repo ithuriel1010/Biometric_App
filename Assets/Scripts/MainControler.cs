@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using Mono.Data.Sqlite;
 using UnityEngine;
 
@@ -19,6 +22,14 @@ public class MainControler : MonoBehaviour
     private int numberOfLinesSquare;
     private float totalTimeSquare;
     private float[] partialTimesSquare;
+
+    private float firstHalfTimeTap;
+    private float secondHalfTimeTap;
+    private float totalTimeTap;
+
+    private float firstHalfTimeTapIdentification;
+    private float secondHalfTimeTapIdentification;
+    private float totalTimeTapIdentification;
     
     private string[] orderOfPointsCross;
     private float totalTimeCross;
@@ -34,7 +45,7 @@ public class MainControler : MonoBehaviour
     private float[] partialTimesCrossIdentification;
     
     private static MainControler _instance;
-    
+
     private List<DatabaseObject> _databaseObjects = new List<DatabaseObject>();
     public static MainControler Instance 
     { 
@@ -68,6 +79,13 @@ public class MainControler : MonoBehaviour
         partialTimesSquare = timeBetweenPoints;
     }
 
+    public void TapUserData(float _firstHalfTimeTap, float _secondHalfTimeTap, float _totalTimeTap)
+    {
+        firstHalfTimeTap = _firstHalfTimeTap;
+        secondHalfTimeTap = _secondHalfTimeTap;
+        totalTimeTap = _totalTimeTap;
+    }
+
     public void CrossUserData(string[] order, float wholeTime, float[] timeBetweenPoints)
     {
         orderOfPointsCross = order;
@@ -88,6 +106,13 @@ public class MainControler : MonoBehaviour
         orderOfPointsCrossIdentification = order;
         totalTimeCrossIdentification = wholeTime;
         partialTimesCrossIdentification = timeBetweenPoints;
+    }
+
+    internal void IdentificationTap(float _firstHalfTimeTapIdentification, float _secondHalfTimeTapIdentification, float v)
+    {
+        firstHalfTimeTapIdentification = _firstHalfTimeTapIdentification;
+        secondHalfTimeTapIdentification = _secondHalfTimeTapIdentification;
+        totalTimeTapIdentification = v;
     }
 
     public string CountPrecentage()
@@ -111,125 +136,55 @@ public class MainControler : MonoBehaviour
         }
     }
 
-    private string database = "test10";
     public void AddToDatabase()
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/" + database;
-		
-        // Open connection
-        IDbConnection dbcon = new SqliteConnection(connection);
-        dbcon.Open();
-
-        // Create table
-        IDbCommand dbcmd;
-        dbcmd = dbcon.CreateCommand();
-        string q_createTable = "CREATE TABLE IF NOT EXISTS my_table (id INTEGER PRIMARY KEY, name CHAR , squareP1 CHAR, squareP2 CHAR, squareP3 CHAR, squareP4 CHAR, squareP5 CHAR, squareTotalTime FLOAT, crossP1 CHAR, crossP2 CHAR, crossP3 CHAR, crossP4 CHAR, crossP5 CHAR, crossP6 CHAR, crossP7 CHAR, crossTotalTime FLOAT)";
-		
-        dbcmd.CommandText = q_createTable;
-        dbcmd.ExecuteReader();
-
-        // Insert values in table
+        ReadData();
+        //'{userName}', '{orderOfPointsSquare[0]}', '{orderOfPointsSquare[1]}', '{orderOfPointsSquare[2]}', '{orderOfPointsSquare[3]}', '{orderOfPointsSquare[4]}', {totalTimeSquare}, '{orderOfPointsCross[0]}', '{orderOfPointsCross[1]}', '{orderOfPointsCross[2]}', '{orderOfPointsCross[3]}', '{orderOfPointsCross[4]}', '{orderOfPointsCross[5]}', '{orderOfPointsCross[6]}', {totalTimeCross})";
+        var user = new DatabaseObject(userName, orderOfPointsSquare, numberOfLinesSquare, totalTimeSquare, partialTimesSquare, orderOfPointsCross, totalTimeCross, partialTimesCross, firstHalfTimeTap, secondHalfTimeTap, totalTimeTap);
         
-        IDbCommand cmnd = dbcon.CreateCommand();
-        
-        
-        cmnd.CommandText = $"INSERT INTO my_table (name, squareP1, squareP2, squareP3, squareP4, squareP5, squareTotalTime, crossP1, crossP2, crossP3, crossP4, crossP5, crossP6, crossP7, crossTotalTime) VALUES ('{userName}', '{orderOfPointsSquare[0]}', '{orderOfPointsSquare[1]}', '{orderOfPointsSquare[2]}', '{orderOfPointsSquare[3]}', '{orderOfPointsSquare[4]}', {totalTimeSquare}, '{orderOfPointsCross[0]}', '{orderOfPointsCross[1]}', '{orderOfPointsCross[2]}', '{orderOfPointsCross[3]}', '{orderOfPointsCross[4]}', '{orderOfPointsCross[5]}', '{orderOfPointsCross[6]}', {totalTimeCross})";
-        cmnd.ExecuteNonQuery();
-
-        
-        dbcon.Close();
-
+        _databaseObjects.Add(user);
+        saveUserData();
     }
 
-    public void ReadFromDatabase()
+    private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile";
+    public void ReadData()
     {
-        string connection = "URI=file:" + Application.persistentDataPath + "/" + database;
-        string nameResulted="No such person";
-        // Open connection
-        IDbConnection dbcon = new SqliteConnection(connection);
-        dbcon.Open();
-
-        // Create table
-        IDbCommand dbcmd;
-        dbcmd = dbcon.CreateCommand();
-        string q_createTable = "CREATE TABLE IF NOT EXISTS my_table (id INTEGER PRIMARY KEY, name CHAR , squareP1 CHAR, squareP2 CHAR, squareP3 CHAR, squareP4 CHAR, squareP5 CHAR, squareTotalTime FLOAT, crossP1 CHAR, crossP2 CHAR, crossP3 CHAR, crossP4 CHAR, crossP5 CHAR, crossP6 CHAR, crossP7 CHAR, crossTotalTime FLOAT)";
-		
-        dbcmd.CommandText = q_createTable;
-        dbcmd.ExecuteReader();
-
-        // Insert values in table
-        
-        IDbCommand cmnd_read = dbcon.CreateCommand();
-        IDataReader reader;
-        var query ="SELECT * FROM my_table";
-        cmnd_read.CommandText = query;
-        reader = cmnd_read.ExecuteReader();
-        
-        while (reader.Read())
+        if (!File.Exists(GetDataFilePath()))
         {
-            var person1 = new DatabaseObject();
-
-            person1.userName = reader[1].ToString();
-
-            string[] squareOrderFromDb = new string[orderOfPointsSquareIdentification.Length];
-            string[] crossOrderFromDb = new string[orderOfPointsCrossIdentification.Length];
-            
-            for (int i = 0; i < orderOfPointsSquareIdentification.Length; i++)
-            {
-                squareOrderFromDb[i] = reader[i + 2].ToString();
-            }
-            person1.orderOfPointsSquare = squareOrderFromDb;
-            person1.totalTimeSquare = float.Parse(reader[7].ToString());
-            
-            for (int i = 0; i < orderOfPointsCrossIdentification.Length; i++)
-            {
-                crossOrderFromDb[i] = reader[i + 8].ToString();
-            }
-            person1.orderOfPointsCross = crossOrderFromDb;
-            person1.totalTimeCross = float.Parse(reader[15].ToString());
-
-
-            _databaseObjects.Add(person1);
-
-            // correct = 0;
-            //
-            // for (int i = 0; i < orderOfPointsSquareIdentification.Length; i++)
-            // {
-            //     //Debug.Log("R: "+reader[i+2]);
-            //     //Debug.Log("Order: "+orderOfPointsSquareIdentification[i]);
-            //
-            //     if (orderOfPointsSquareIdentification[i] == reader[i+2].ToString())
-            //     {
-            //         correct++;
-            //     }
-            // }
-            //
-            // //Debug.Log("corr: "+correct);
-            // if (correct == orderOfPointsSquareIdentification.Length)
-            // {
-            //     nameResulted = reader[1].ToString();
-            // }
+            saveUserData();
         }
-        
-        // Close connection
-        dbcon.Close();
-        //return nameResulted;
+        using (Stream stream = File.Open(GetDataFilePath(), FileMode.Open))
+        {
+            BinaryFormatter bin = new BinaryFormatter();
+            _databaseObjects = (List<DatabaseObject>)bin.Deserialize(stream);
+        }
     }
-
+    
+    public void saveUserData()
+    {
+        using (Stream stream = File.Open(GetDataFilePath(), FileMode.Create))
+        {
+            BinaryFormatter bin = new BinaryFormatter();
+            bin.Serialize(stream, _databaseObjects);
+        }
+    }
     public string Check()
     {
-        ReadFromDatabase();
+        ReadData();
 
         string result = "Nie ma takiej osoby";
         
         int correct = 0;
         int correctCross = 0;
+        int correctTap = 0;
+        float errorTime = 5.0f;
         List<DatabaseObject> possibleObjects = new List<DatabaseObject>();
 
         foreach (var person in _databaseObjects)
         {
             correct = 0;
             correctCross = 0;
+            correctTap = 0;
             for (int i = 0; i < orderOfPointsSquareIdentification.Length; i++)
             {
                
@@ -238,7 +193,12 @@ public class MainControler : MonoBehaviour
                     correct++;
                 }
             }
-            
+
+            if (Math.Abs(firstHalfTimeTapIdentification - person.firstHalfTimeTap) < errorTime)
+                correctTap++;
+            if (Math.Abs(secondHalfTimeTapIdentification - person.secondHalfTimeTap) < errorTime)
+                correctTap++;
+
             for (int i = 0; i < orderOfPointsCrossIdentification.Length; i++)
             {
                
@@ -248,7 +208,7 @@ public class MainControler : MonoBehaviour
                 }
             }
             
-            if (correct == orderOfPointsSquareIdentification.Length && correctCross==orderOfPointsCrossIdentification.Length)
+            if (correct == orderOfPointsSquareIdentification.Length && correctTap == 2 && correctCross==orderOfPointsCrossIdentification.Length)
             {
                 possibleObjects.Add(person);
             }
@@ -261,30 +221,40 @@ public class MainControler : MonoBehaviour
             foreach (var possiblePerson in possibleObjects)
             {
                 possiblePerson.timeDifferenceSquare = Mathf.Abs(totalTimeSquareIdentification - possiblePerson.totalTimeSquare);
+                possiblePerson.timeDifferenceTap = Mathf.Abs(totalTimeTapIdentification - possiblePerson.totalTimeTap);
                 possiblePerson.timeDifferenceCross = Mathf.Abs(totalTimeCrossIdentification - possiblePerson.totalTimeCross);
             }
             
             DatabaseObject lowestSquare = possibleObjects[0];
+            DatabaseObject lowestTap = possibleObjects[0];
             DatabaseObject lowestCross = possibleObjects[0];
         
             foreach(var x in possibleObjects){
                 if(x.timeDifferenceSquare < lowestSquare.timeDifferenceSquare)
                     lowestSquare = x;
             }
-        
-            foreach(var x in possibleObjects){
+
+            foreach (var x in possibleObjects)
+            {
+                if (x.timeDifferenceTap < lowestTap.timeDifferenceSquare)
+                    lowestTap = x;
+            }
+
+            foreach (var x in possibleObjects){
                 if(x.timeDifferenceCross < lowestCross.timeDifferenceCross)
                     lowestCross = x;
             }
 
-            if (lowestSquare == lowestCross)
+            Debug.Log("SPRAWDZENIE RESULTATOW");
+            Debug.Log(lowestSquare.userName);
+            Debug.Log(lowestCross.userName);
+            Debug.Log(lowestTap.userName);
+            if (lowestSquare == lowestCross && lowestSquare == lowestTap)
             {
                 result = lowestCross.userName;
             }
         }
-        
-        
-        
+
         return result;
     }
 }
