@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -20,7 +21,15 @@ public class MainControler : MonoBehaviour
     private string[] orderOfPointsSquare;
     private int numberOfLinesSquare;
     private float totalTimeSquare;
-    private float[] partialTimesSquare; 
+    private float[] partialTimesSquare;
+
+    private float firstHalfTimeTap;
+    private float secondHalfTimeTap;
+    private float totalTimeTap;
+
+    private float firstHalfTimeTapIdentification;
+    private float secondHalfTimeTapIdentification;
+    private float totalTimeTapIdentification;
     
     private string[] orderOfPointsCross;
     private float totalTimeCross;
@@ -70,6 +79,13 @@ public class MainControler : MonoBehaviour
         partialTimesSquare = timeBetweenPoints;
     }
 
+    public void TapUserData(float _firstHalfTimeTap, float _secondHalfTimeTap, float _totalTimeTap)
+    {
+        firstHalfTimeTap = _firstHalfTimeTap;
+        secondHalfTimeTap = _secondHalfTimeTap;
+        totalTimeTap = _totalTimeTap;
+    }
+
     public void CrossUserData(string[] order, float wholeTime, float[] timeBetweenPoints)
     {
         orderOfPointsCross = order;
@@ -90,6 +106,13 @@ public class MainControler : MonoBehaviour
         orderOfPointsCrossIdentification = order;
         totalTimeCrossIdentification = wholeTime;
         partialTimesCrossIdentification = timeBetweenPoints;
+    }
+
+    internal void IdentificationTap(float _firstHalfTimeTapIdentification, float _secondHalfTimeTapIdentification, float v)
+    {
+        firstHalfTimeTapIdentification = _firstHalfTimeTapIdentification;
+        secondHalfTimeTapIdentification = _secondHalfTimeTapIdentification;
+        totalTimeTapIdentification = v;
     }
 
     public string CountPrecentage()
@@ -117,7 +140,7 @@ public class MainControler : MonoBehaviour
     {
         ReadData();
         //'{userName}', '{orderOfPointsSquare[0]}', '{orderOfPointsSquare[1]}', '{orderOfPointsSquare[2]}', '{orderOfPointsSquare[3]}', '{orderOfPointsSquare[4]}', {totalTimeSquare}, '{orderOfPointsCross[0]}', '{orderOfPointsCross[1]}', '{orderOfPointsCross[2]}', '{orderOfPointsCross[3]}', '{orderOfPointsCross[4]}', '{orderOfPointsCross[5]}', '{orderOfPointsCross[6]}', {totalTimeCross})";
-        var user = new DatabaseObject(userName, orderOfPointsSquare, numberOfLinesSquare, totalTimeSquare, partialTimesSquare, orderOfPointsCross, totalTimeCross, partialTimesCross);
+        var user = new DatabaseObject(userName, orderOfPointsSquare, numberOfLinesSquare, totalTimeSquare, partialTimesSquare, orderOfPointsCross, totalTimeCross, partialTimesCross, firstHalfTimeTap, secondHalfTimeTap, totalTimeTap);
         
         _databaseObjects.Add(user);
         saveUserData();
@@ -153,12 +176,15 @@ public class MainControler : MonoBehaviour
         
         int correct = 0;
         int correctCross = 0;
+        int correctTap = 0;
+        float errorTime = 5.0f;
         List<DatabaseObject> possibleObjects = new List<DatabaseObject>();
 
         foreach (var person in _databaseObjects)
         {
             correct = 0;
             correctCross = 0;
+            correctTap = 0;
             for (int i = 0; i < orderOfPointsSquareIdentification.Length; i++)
             {
                
@@ -167,7 +193,12 @@ public class MainControler : MonoBehaviour
                     correct++;
                 }
             }
-            
+
+            if (Math.Abs(firstHalfTimeTapIdentification - person.firstHalfTimeTap) < errorTime)
+                correctTap++;
+            if (Math.Abs(secondHalfTimeTapIdentification - person.secondHalfTimeTap) < errorTime)
+                correctTap++;
+
             for (int i = 0; i < orderOfPointsCrossIdentification.Length; i++)
             {
                
@@ -177,7 +208,7 @@ public class MainControler : MonoBehaviour
                 }
             }
             
-            if (correct == orderOfPointsSquareIdentification.Length && correctCross==orderOfPointsCrossIdentification.Length)
+            if (correct == orderOfPointsSquareIdentification.Length && correctTap == 2 && correctCross==orderOfPointsCrossIdentification.Length)
             {
                 possibleObjects.Add(person);
             }
@@ -190,23 +221,35 @@ public class MainControler : MonoBehaviour
             foreach (var possiblePerson in possibleObjects)
             {
                 possiblePerson.timeDifferenceSquare = Mathf.Abs(totalTimeSquareIdentification - possiblePerson.totalTimeSquare);
+                possiblePerson.timeDifferenceTap = Mathf.Abs(totalTimeTapIdentification - possiblePerson.totalTimeTap);
                 possiblePerson.timeDifferenceCross = Mathf.Abs(totalTimeCrossIdentification - possiblePerson.totalTimeCross);
             }
             
             DatabaseObject lowestSquare = possibleObjects[0];
+            DatabaseObject lowestTap = possibleObjects[0];
             DatabaseObject lowestCross = possibleObjects[0];
         
             foreach(var x in possibleObjects){
                 if(x.timeDifferenceSquare < lowestSquare.timeDifferenceSquare)
                     lowestSquare = x;
             }
-        
-            foreach(var x in possibleObjects){
+
+            foreach (var x in possibleObjects)
+            {
+                if (x.timeDifferenceTap < lowestTap.timeDifferenceSquare)
+                    lowestTap = x;
+            }
+
+            foreach (var x in possibleObjects){
                 if(x.timeDifferenceCross < lowestCross.timeDifferenceCross)
                     lowestCross = x;
             }
 
-            if (lowestSquare == lowestCross)
+            Debug.Log("SPRAWDZENIE RESULTATOW");
+            Debug.Log(lowestSquare.userName);
+            Debug.Log(lowestCross.userName);
+            Debug.Log(lowestTap.userName);
+            if (lowestSquare == lowestCross && lowestSquare == lowestTap)
             {
                 result = lowestCross.userName;
             }

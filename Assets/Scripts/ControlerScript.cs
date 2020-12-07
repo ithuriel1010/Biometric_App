@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,6 +13,9 @@ public class ControlerScript : MonoBehaviour
     private int numberOfLines = 0;
     private float wholeTime;
     private float[] timesBetweenPoints;
+    private float firstHalfTimeTap;
+    private float secondHalfTimeTap;
+    private float totalTimeTap;
 
     // Start is called before the first frame update
     void Start()
@@ -79,6 +83,15 @@ public class ControlerScript : MonoBehaviour
         //Debug.Log("0: "+timesBetweenPoints[0]+" 1: "+timesBetweenPoints[1]+" ostatnie: "+timesBetweenPoints[timesBetweenPoints.Length-1]);
     }
 
+    public void TapUserData(float _firstHalfTimeTap, float _secondHalfTimeTap, float _totalTimeTap)
+    {
+        firstHalfTimeTap = _firstHalfTimeTap;
+        secondHalfTimeTap = _secondHalfTimeTap;
+        totalTimeTap = _totalTimeTap;
+        Debug.Log("Szybkosc totala tapa");
+        Debug.Log(_totalTimeTap);
+    }
+
     public void NewLine()
     {
         numberOfLines++;
@@ -89,6 +102,13 @@ public class ControlerScript : MonoBehaviour
         var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
         MainControler.Instance.SquareUserData(orderOfPointsClicked, numberOfLines, wholeTime, timesBetweenPoints);
         Debug.Log(timesOfPoints[2]);
+    }
+
+    public void EndOfTapLevel()
+    {
+        Debug.Log(firstHalfTimeTap);
+        Debug.Log(secondHalfTimeTap);
+        MainControler.Instance.TapUserData(firstHalfTimeTap, secondHalfTimeTap, totalTimeTap);
     }
     
     public void EndOfCrossLevel()
@@ -110,5 +130,11 @@ public class ControlerScript : MonoBehaviour
     {
         var orderOfPointsClicked = pointsOrder;
         MainControler.Instance.IdentificationCross(orderOfPointsClicked, wholeTime, timesBetweenPoints);
+    }
+    public void TapIdentification(float firstHalfTime, float secondHalfTime, float v)
+    {
+        Debug.Log("Szybkosc identyfikacji tapa");
+        Debug.Log(v);
+        MainControler.Instance.IdentificationTap(firstHalfTime, secondHalfTime, v);
     }
 }
