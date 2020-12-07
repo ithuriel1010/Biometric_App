@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ResultScript : MonoBehaviour
@@ -13,6 +14,10 @@ public class ResultScript : MonoBehaviour
         text.text = result;
     }
 
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("MainScreen", LoadSceneMode.Single);
+    }
     // Update is called once per frame
     void Update()
     {

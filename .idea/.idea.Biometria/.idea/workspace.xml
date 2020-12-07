@@ -37,7 +37,7 @@
       <change beforePath="$PROJECT_DIR$/Assets/Plugins/x64.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Plugins/x86.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/x86.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DatabaseObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DatabaseObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" afterDir="false" />    
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +74,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/ControlerScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/DatabaseObject.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/AddPersonScene.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ResultScript.cs" />
       </list>
     </option>
   </component>
@@ -155,7 +157,7 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="532" height="466" key="DebuggerActiveHint" timestamp="1604067963200">
+    <state width="532" height="466" key="DebuggerActiveHint" timestamp="1606070586552">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="532" height="466" key="DebuggerActiveHint/1920.-7.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1604067963200" />
