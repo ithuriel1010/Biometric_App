@@ -115,27 +115,6 @@ public class MainControler : MonoBehaviour
         totalTimeTapIdentification = v;
     }
 
-    public string CountPrecentage()
-    {
-        int correctOrder = 0;
-        for (int i = 0; i < orderOfPointsSquare.Length; i++)
-        {
-            if (orderOfPointsSquare[i] == orderOfPointsSquareIdentification[i])
-            {
-                correctOrder++;
-            }
-        }
-
-        if (correctOrder == orderOfPointsSquare.Length)
-        {
-            return "Correct order";
-        }
-        else
-        {
-            return "Incorrect order";
-        }
-    }
-
     public void AddToDatabase()
     {
         ReadData();
@@ -146,7 +125,7 @@ public class MainControler : MonoBehaviour
         saveUserData();
     }
 
-    private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile";
+    private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile3";
     public void ReadData()
     {
         if (!File.Exists(GetDataFilePath()))
@@ -223,8 +202,22 @@ public class MainControler : MonoBehaviour
                 possiblePerson.timeDifferenceSquare = Mathf.Abs(totalTimeSquareIdentification - possiblePerson.totalTimeSquare);
                 possiblePerson.timeDifferenceTap = Mathf.Abs(totalTimeTapIdentification - possiblePerson.totalTimeTap);
                 possiblePerson.timeDifferenceCross = Mathf.Abs(totalTimeCrossIdentification - possiblePerson.totalTimeCross);
+
+                possiblePerson.precentageSquare =
+                    CountPrecentage(possiblePerson.totalTimeSquare, possiblePerson.timeDifferenceSquare);
+                possiblePerson.precentageCross =
+                    CountPrecentage(possiblePerson.totalTimeCross, possiblePerson.timeDifferenceCross);
+                possiblePerson.precentageTap =
+                    CountPrecentage(possiblePerson.totalTimeTap, possiblePerson.timeDifferenceTap);
+
+                possiblePerson.wholePrecentage = possiblePerson.precentageSquare + possiblePerson.precentageCross +
+                                                 possiblePerson.precentageTap;
+                
+                Debug.Log("Total time tap for " + possiblePerson.userName +": "+  possiblePerson.totalTimeTap);
+
             }
             
+            /*
             DatabaseObject lowestSquare = possibleObjects[0];
             DatabaseObject lowestTap = possibleObjects[0];
             DatabaseObject lowestCross = possibleObjects[0];
@@ -249,12 +242,29 @@ public class MainControler : MonoBehaviour
             Debug.Log(lowestSquare.userName);
             Debug.Log(lowestCross.userName);
             Debug.Log(lowestTap.userName);
+            
             if (lowestSquare == lowestCross && lowestSquare == lowestTap)
             {
                 result = lowestCross.userName;
             }
+            */
+            
+            DatabaseObject lowestPrecentage = possibleObjects[0];
+        
+            foreach(var x in possibleObjects){
+                if(x.wholePrecentage < lowestPrecentage.wholePrecentage)
+                    lowestPrecentage = x;
+            }
+            
+            result = lowestPrecentage.userName;
         }
 
         return result;
+    }
+
+    public float CountPrecentage(float totalTime, float timeDifference)
+    {
+        float precentage = (timeDifference / totalTime)*100;
+        return precentage;
     }
 }
