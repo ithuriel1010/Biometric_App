@@ -64,13 +64,14 @@ public class MainControler : MonoBehaviour
 
     public void Test()
     {
-        Debug.Log("LOL");
     }
 
     public void GetName(string name)
     {
         userName = name;
     }
+
+    //Metody zapisujące zebrane wartości do określonych pól
     public void SquareUserData(string[] order, int number, float wholeTime, float[] timeBetweenPoints)
     {
         orderOfPointsSquare = order;
@@ -93,6 +94,7 @@ public class MainControler : MonoBehaviour
         partialTimesCross = timeBetweenPoints;
     }
 
+  
     public void IdentificationSquare(string[] order, int number, float wholeTime, float[] timeBetweenPoints)
     {
         orderOfPointsSquareIdentification = order;
@@ -115,38 +117,18 @@ public class MainControler : MonoBehaviour
         totalTimeTapIdentification = v;
     }
 
-    public string CountPrecentage()
-    {
-        int correctOrder = 0;
-        for (int i = 0; i < orderOfPointsSquare.Length; i++)
-        {
-            if (orderOfPointsSquare[i] == orderOfPointsSquareIdentification[i])
-            {
-                correctOrder++;
-            }
-        }
-
-        if (correctOrder == orderOfPointsSquare.Length)
-        {
-            return "Correct order";
-        }
-        else
-        {
-            return "Incorrect order";
-        }
-    }
-
+    //Zapisanie zebranych wartości do bazy danych
     public void AddToDatabase()
     {
         ReadData();
-        //'{userName}', '{orderOfPointsSquare[0]}', '{orderOfPointsSquare[1]}', '{orderOfPointsSquare[2]}', '{orderOfPointsSquare[3]}', '{orderOfPointsSquare[4]}', {totalTimeSquare}, '{orderOfPointsCross[0]}', '{orderOfPointsCross[1]}', '{orderOfPointsCross[2]}', '{orderOfPointsCross[3]}', '{orderOfPointsCross[4]}', '{orderOfPointsCross[5]}', '{orderOfPointsCross[6]}', {totalTimeCross})";
         var user = new DatabaseObject(userName, orderOfPointsSquare, numberOfLinesSquare, totalTimeSquare, partialTimesSquare, orderOfPointsCross, totalTimeCross, partialTimesCross, firstHalfTimeTap, secondHalfTimeTap, totalTimeTap);
         
         _databaseObjects.Add(user);
         saveUserData();
     }
-
-    private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile";
+   
+    //Pobranie ścieżki pliku zawierającego bazę danych
+    private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile3";
     public void ReadData()
     {
         if (!File.Exists(GetDataFilePath()))
@@ -168,6 +150,7 @@ public class MainControler : MonoBehaviour
             bin.Serialize(stream, _databaseObjects);
         }
     }
+
     public string Check()
     {
         ReadData();
@@ -214,8 +197,6 @@ public class MainControler : MonoBehaviour
             }
         }
         
-        //float[] timeDifference = new float[possibleObjects.Count];
-
         if (possibleObjects.Count != 0)
         {
             foreach (var possiblePerson in possibleObjects)
@@ -223,8 +204,22 @@ public class MainControler : MonoBehaviour
                 possiblePerson.timeDifferenceSquare = Mathf.Abs(totalTimeSquareIdentification - possiblePerson.totalTimeSquare);
                 possiblePerson.timeDifferenceTap = Mathf.Abs(totalTimeTapIdentification - possiblePerson.totalTimeTap);
                 possiblePerson.timeDifferenceCross = Mathf.Abs(totalTimeCrossIdentification - possiblePerson.totalTimeCross);
+
+                possiblePerson.precentageSquare =
+                    CountPrecentage(possiblePerson.totalTimeSquare, possiblePerson.timeDifferenceSquare);
+                possiblePerson.precentageCross =
+                    CountPrecentage(possiblePerson.totalTimeCross, possiblePerson.timeDifferenceCross);
+                possiblePerson.precentageTap =
+                    CountPrecentage(possiblePerson.totalTimeTap, possiblePerson.timeDifferenceTap);
+
+                possiblePerson.wholePrecentage = possiblePerson.precentageSquare + possiblePerson.precentageCross +
+                                                 possiblePerson.precentageTap;
+                
+                Debug.Log("Total time tap for " + possiblePerson.userName +": "+  possiblePerson.totalTimeTap);
+
             }
             
+            /*
             DatabaseObject lowestSquare = possibleObjects[0];
             DatabaseObject lowestTap = possibleObjects[0];
             DatabaseObject lowestCross = possibleObjects[0];
@@ -234,27 +229,49 @@ public class MainControler : MonoBehaviour
                     lowestSquare = x;
             }
 
-            foreach (var x in possibleObjects)
-            {
-                if (x.timeDifferenceTap < lowestTap.timeDifferenceSquare)
-                    lowestTap = x;
-            }
 
-            foreach (var x in possibleObjects){
-                if(x.timeDifferenceCross < lowestCross.timeDifferenceCross)
-                    lowestCross = x;
-            }
+                possiblePerson.precentageSquare =
+                    CountPrecentage(possiblePerson.totalTimeSquare, possiblePerson.timeDifferenceSquare);
+                possiblePerson.precentageCross =
+                    CountPrecentage(possiblePerson.totalTimeCross, possiblePerson.timeDifferenceCross);
+                possiblePerson.precentageTap =
+                    CountPrecentage(possiblePerson.totalTimeTap, possiblePerson.timeDifferenceTap);
+
+                possiblePerson.wholePrecentage = possiblePerson.precentageSquare + possiblePerson.precentageCross +
+                                                 possiblePerson.precentageTap;
+                
+                Debug.Log("Total time tap for " + possiblePerson.userName +": "+  possiblePerson.totalTimeTap);
 
             Debug.Log("SPRAWDZENIE RESULTATOW");
             Debug.Log(lowestSquare.userName);
             Debug.Log(lowestCross.userName);
             Debug.Log(lowestTap.userName);
+            
             if (lowestSquare == lowestCross && lowestSquare == lowestTap)
             {
                 result = lowestCross.userName;
             }
+            */
+            
+            }
+                        
+
+            DatabaseObject lowestPrecentage = possibleObjects[0];
+        
+            foreach(var x in possibleObjects){
+                if(x.wholePrecentage < lowestPrecentage.wholePrecentage)
+                    lowestPrecentage = x;
+            }
+            
+            result = lowestPrecentage.userName;
         }
 
         return result;
+    }
+
+    public float CountPrecentage(float totalTime, float timeDifference)
+    {
+        float precentage = (timeDifference / totalTime)*100;
+        return precentage;
     }
 }

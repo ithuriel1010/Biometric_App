@@ -13,17 +13,21 @@ public class DatabaseObject
     public float totalTimeSquare;
     public float timeDifferenceSquare;
     public float[] partialTimesSquare;
+    public float precentageSquare;
     
     public string[] orderOfPointsCross;
     public float totalTimeCross;
     public float timeDifferenceCross;
     public float[] partialTimesCross;
+    public float precentageCross;
 
     public float firstHalfTimeTap;
     public float secondHalfTimeTap;
     public float timeDifferenceTap;
     public float totalTimeTap;
+    public float precentageTap;
 
+    public float wholePrecentage;
     public DatabaseObject(string userName, string[] orderOfPointsSquare, int numberOfLinesSquare, float totalTimeSquare, float[] partialTimesSquare, string[] orderOfPointsCross, float totalTimeCross, float[] partialTimesCross, float _firstHalfTimeTap, float _secondHalfTimeTap, float _totalTimeTap)
     {
         this.userName = userName;
