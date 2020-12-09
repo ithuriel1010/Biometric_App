@@ -64,13 +64,14 @@ public class MainControler : MonoBehaviour
 
     public void Test()
     {
-        Debug.Log("LOL");
     }
 
     public void GetName(string name)
     {
         userName = name;
     }
+
+    //Metody zapisujące zebrane wartości do określonych pól
     public void SquareUserData(string[] order, int number, float wholeTime, float[] timeBetweenPoints)
     {
         orderOfPointsSquare = order;
@@ -93,6 +94,7 @@ public class MainControler : MonoBehaviour
         partialTimesCross = timeBetweenPoints;
     }
 
+  
     public void IdentificationSquare(string[] order, int number, float wholeTime, float[] timeBetweenPoints)
     {
         orderOfPointsSquareIdentification = order;
@@ -115,16 +117,17 @@ public class MainControler : MonoBehaviour
         totalTimeTapIdentification = v;
     }
 
+    //Zapisanie zebranych wartości do bazy danych
     public void AddToDatabase()
     {
         ReadData();
-        //'{userName}', '{orderOfPointsSquare[0]}', '{orderOfPointsSquare[1]}', '{orderOfPointsSquare[2]}', '{orderOfPointsSquare[3]}', '{orderOfPointsSquare[4]}', {totalTimeSquare}, '{orderOfPointsCross[0]}', '{orderOfPointsCross[1]}', '{orderOfPointsCross[2]}', '{orderOfPointsCross[3]}', '{orderOfPointsCross[4]}', '{orderOfPointsCross[5]}', '{orderOfPointsCross[6]}', {totalTimeCross})";
         var user = new DatabaseObject(userName, orderOfPointsSquare, numberOfLinesSquare, totalTimeSquare, partialTimesSquare, orderOfPointsCross, totalTimeCross, partialTimesCross, firstHalfTimeTap, secondHalfTimeTap, totalTimeTap);
         
         _databaseObjects.Add(user);
         saveUserData();
     }
-
+   
+    //Pobranie ścieżki pliku zawierającego bazę danych
     private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile3";
     public void ReadData()
     {
@@ -147,6 +150,7 @@ public class MainControler : MonoBehaviour
             bin.Serialize(stream, _databaseObjects);
         }
     }
+
     public string Check()
     {
         ReadData();
@@ -193,8 +197,6 @@ public class MainControler : MonoBehaviour
             }
         }
         
-        //float[] timeDifference = new float[possibleObjects.Count];
-
         if (possibleObjects.Count != 0)
         {
             foreach (var possiblePerson in possibleObjects)
@@ -227,16 +229,18 @@ public class MainControler : MonoBehaviour
                     lowestSquare = x;
             }
 
-            foreach (var x in possibleObjects)
-            {
-                if (x.timeDifferenceTap < lowestTap.timeDifferenceSquare)
-                    lowestTap = x;
-            }
 
-            foreach (var x in possibleObjects){
-                if(x.timeDifferenceCross < lowestCross.timeDifferenceCross)
-                    lowestCross = x;
-            }
+                possiblePerson.precentageSquare =
+                    CountPrecentage(possiblePerson.totalTimeSquare, possiblePerson.timeDifferenceSquare);
+                possiblePerson.precentageCross =
+                    CountPrecentage(possiblePerson.totalTimeCross, possiblePerson.timeDifferenceCross);
+                possiblePerson.precentageTap =
+                    CountPrecentage(possiblePerson.totalTimeTap, possiblePerson.timeDifferenceTap);
+
+                possiblePerson.wholePrecentage = possiblePerson.precentageSquare + possiblePerson.precentageCross +
+                                                 possiblePerson.precentageTap;
+                
+                Debug.Log("Total time tap for " + possiblePerson.userName +": "+  possiblePerson.totalTimeTap);
 
             Debug.Log("SPRAWDZENIE RESULTATOW");
             Debug.Log(lowestSquare.userName);
@@ -249,6 +253,9 @@ public class MainControler : MonoBehaviour
             }
             */
             
+            }
+                        
+
             DatabaseObject lowestPrecentage = possibleObjects[0];
         
             foreach(var x in possibleObjects){

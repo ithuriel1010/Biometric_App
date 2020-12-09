@@ -20,22 +20,12 @@ public class Point : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            //Debug.Log(pointsOrder.Length);
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero);
 
             if (hit != null && hit.collider != null)
-            {
-                //onEnter = true;
-                //Debug.Log(order.ToString());
-               //_controlerScript.Test();
-                    
-                _controlerScript.Points(hit.collider.name);
-                    
-                //pointsOrder[order] = hit.collider.name;
-                //Debug.Log("I'm hitting " + hit.collider.name);
-                //order++;
-                
+            {                    
+                _controlerScript.Points(hit.collider.name);  
             }
         }
 

@@ -19,6 +19,7 @@ public class TapScript : MonoBehaviour
         _controlerScript = FindObjectOfType<ControlerScript>();
     }
 
+    //Metoda trzykrotnie zapisująca czas w którym przycisk został tapnięty
     public void SaveTimeOfTap()
     {
         if(firstTimeTap == 0.0f) {
@@ -33,6 +34,7 @@ public class TapScript : MonoBehaviour
         }
     }
 
+    //Przejście do kolejnego poziomu
     public void MoveToLevel3()
     {
         Debug.Log(thirdTimeTap);
@@ -41,10 +43,12 @@ public class TapScript : MonoBehaviour
         if(thirdTimeTap == true)
         {
             _controlerScript.TapUserData(firstHalfTime, secondHalfTime, Time.time - firstTimeTap);
+            _controlerScript.EndOfTapLevel();
             SceneManager.LoadScene("Cross", LoadSceneMode.Single);
         }
     }
     
+    //Przejście do kolejnego poziomu w przypadku identyfikacji
     public void MoveToIdentifyLevel3()
     {
         if (thirdTimeTap == true)

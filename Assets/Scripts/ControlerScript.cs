@@ -83,13 +83,14 @@ public class ControlerScript : MonoBehaviour
         //Debug.Log("0: "+timesBetweenPoints[0]+" 1: "+timesBetweenPoints[1]+" ostatnie: "+timesBetweenPoints[timesBetweenPoints.Length-1]);
     }
 
+    //Przypisanie wartości do zmiennych
     public void TapUserData(float _firstHalfTimeTap, float _secondHalfTimeTap, float _totalTimeTap)
     {
         firstHalfTimeTap = _firstHalfTimeTap;
         secondHalfTimeTap = _secondHalfTimeTap;
         totalTimeTap = _totalTimeTap;
-        Debug.Log("Szybkosc totala tapa");
-        Debug.Log(_totalTimeTap);
+        //Debug.Log("Szybkosc total tapa");
+        //Debug.Log(_totalTimeTap);
     }
 
     public void NewLine()
@@ -104,6 +105,7 @@ public class ControlerScript : MonoBehaviour
         Debug.Log(timesOfPoints[2]);
     }
 
+    //Wyświetlenie informacji w konsoli na temat poziomu 2
     public void EndOfTapLevel()
     {
         Debug.Log(firstHalfTimeTap);
@@ -111,6 +113,7 @@ public class ControlerScript : MonoBehaviour
         MainControler.Instance.TapUserData(firstHalfTimeTap, secondHalfTimeTap, totalTimeTap);
     }
     
+    //Wyświetlenie informacji w konsoli na temat poziomu 3
     public void EndOfCrossLevel()
     {
         var orderOfPointsClicked = pointsOrder;
@@ -120,6 +123,7 @@ public class ControlerScript : MonoBehaviour
 
     }
     
+
     public void EndOfSquareIdentification()
     {
         var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
@@ -131,6 +135,8 @@ public class ControlerScript : MonoBehaviour
         var orderOfPointsClicked = pointsOrder;
         MainControler.Instance.IdentificationCross(orderOfPointsClicked, wholeTime, timesBetweenPoints);
     }
+
+    //Przekazanie zebranych wartości do głównej metody
     public void TapIdentification(float firstHalfTime, float secondHalfTime, float v)
     {
         Debug.Log("Szybkosc identyfikacji tapa");
