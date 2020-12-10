@@ -11,9 +11,6 @@ using UnityEngine;
 public class MainControler : MonoBehaviour
 {
     void Start () {
-
-        // Create database
-        
     }
     
     private string userName;
@@ -60,10 +57,6 @@ public class MainControler : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(this.gameObject);
-    }
-
-    public void Test()
-    {
     }
 
     public void GetName(string name)
@@ -128,7 +121,7 @@ public class MainControler : MonoBehaviour
     }
    
     //Pobranie ścieżki pliku zawierającego bazę danych
-    private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile3";
+    private string GetDataFilePath() => Application.persistentDataPath + "/" + "datafile4";
     public void ReadData()
     {
         if (!File.Exists(GetDataFilePath()))
@@ -142,6 +135,7 @@ public class MainControler : MonoBehaviour
         }
     }
     
+    //Zapisanie danych w bazie
     public void saveUserData()
     {
         using (Stream stream = File.Open(GetDataFilePath(), FileMode.Create))
@@ -191,7 +185,7 @@ public class MainControler : MonoBehaviour
                 }
             }
             
-            if (correct == orderOfPointsSquareIdentification.Length && correctTap == 2 && correctCross==orderOfPointsCrossIdentification.Length)
+            if (correct == orderOfPointsSquareIdentification.Length && correctTap == 2 && correctCross==orderOfPointsCrossIdentification.Length)        //Jeżeli identyfikująca się osoba wykonała połączenia w takiej samej kolejności co osoba x zapisana w bazie, to osoba x jest dodawana do listy możliwych osób do identyfikacji
             {
                 possibleObjects.Add(person);
             }
@@ -205,6 +199,8 @@ public class MainControler : MonoBehaviour
                 possiblePerson.timeDifferenceTap = Mathf.Abs(totalTimeTapIdentification - possiblePerson.totalTimeTap);
                 possiblePerson.timeDifferenceCross = Mathf.Abs(totalTimeCrossIdentification - possiblePerson.totalTimeCross);
 
+                //Dla każdego poziomu, dla każdej osoby wyliczamy jakim procentem czasu całkowitego wykonania gestu jest różnica w jego wykonaniu przez osobę która się identyfikuje.
+                //Im mniejszy procent, tym różnica czasowa jest mniejsza co oznacza większe prawdopodobieństwo na to że osoba się identyfikująca to ta osoba
                 possiblePerson.precentageSquare =
                     CountPrecentage(possiblePerson.totalTimeSquare, possiblePerson.timeDifferenceSquare);
                 possiblePerson.precentageCross =
@@ -215,48 +211,11 @@ public class MainControler : MonoBehaviour
                 possiblePerson.wholePrecentage = possiblePerson.precentageSquare + possiblePerson.precentageCross +
                                                  possiblePerson.precentageTap;
                 
-                Debug.Log("Total time tap for " + possiblePerson.userName +": "+  possiblePerson.totalTimeTap);
+                Debug.Log("Total precentage for " + possiblePerson.userName +": "+  possiblePerson.wholePrecentage);
 
             }
-            
-            /*
-            DatabaseObject lowestSquare = possibleObjects[0];
-            DatabaseObject lowestTap = possibleObjects[0];
-            DatabaseObject lowestCross = possibleObjects[0];
-        
-            foreach(var x in possibleObjects){
-                if(x.timeDifferenceSquare < lowestSquare.timeDifferenceSquare)
-                    lowestSquare = x;
-            }
 
-
-                possiblePerson.precentageSquare =
-                    CountPrecentage(possiblePerson.totalTimeSquare, possiblePerson.timeDifferenceSquare);
-                possiblePerson.precentageCross =
-                    CountPrecentage(possiblePerson.totalTimeCross, possiblePerson.timeDifferenceCross);
-                possiblePerson.precentageTap =
-                    CountPrecentage(possiblePerson.totalTimeTap, possiblePerson.timeDifferenceTap);
-
-                possiblePerson.wholePrecentage = possiblePerson.precentageSquare + possiblePerson.precentageCross +
-                                                 possiblePerson.precentageTap;
-                
-                Debug.Log("Total time tap for " + possiblePerson.userName +": "+  possiblePerson.totalTimeTap);
-
-            Debug.Log("SPRAWDZENIE RESULTATOW");
-            Debug.Log(lowestSquare.userName);
-            Debug.Log(lowestCross.userName);
-            Debug.Log(lowestTap.userName);
-            
-            if (lowestSquare == lowestCross && lowestSquare == lowestTap)
-            {
-                result = lowestCross.userName;
-            }
-            */
-            
-            }
-                        
-
-            DatabaseObject lowestPrecentage = possibleObjects[0];
+            DatabaseObject lowestPrecentage = possibleObjects[0];        //Szukamy osoby z najniższą wartością procentową - im mniejszy procent tym mniejsza była różnica czasów we wszystkich poziomach
         
             foreach(var x in possibleObjects){
                 if(x.wholePrecentage < lowestPrecentage.wholePrecentage)

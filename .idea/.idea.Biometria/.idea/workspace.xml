@@ -31,14 +31,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a971f1af-83c1-4711-b84f-b5cdfadeb250" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Biometria/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Biometria/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Biometria/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Biometria/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Cross.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Cross.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/IdentifyCross.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/IdentifyCross.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/IdentifySquare.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/IdentifySquare.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Square.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Square.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DatabaseObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DatabaseObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AddPersonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AddPersonScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ControlerScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ControlerScript.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ResultScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ResultScript.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,14 +66,14 @@
         <option value="$PROJECT_DIR$/Assets/MainControler.cs" />
         <option value="$PROJECT_DIR$/Assets/SqliteHelper.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/SqlHelper.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ResultScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Point.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/AddPersonScene.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ControlerScript.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/AddPersonScene.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ResultScript.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/DatabaseObject.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MainControler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ResultScript.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ResultScript.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/AddPersonScene.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/AddPersonScene.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ControlerScript.cs" />
       </list>
     </option>
   </component>
@@ -104,10 +101,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="21608">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="21608" />
+      <option name="pid" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -135,6 +132,7 @@
       <workItem from="1605286320036" duration="3801000" />
       <workItem from="1606048218511" duration="5369000" />
       <workItem from="1607432974478" duration="2942000" />
+      <workItem from="1607593032248" duration="1603000" />
     </task>
     <servers />
   </component>

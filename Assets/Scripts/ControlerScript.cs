@@ -28,17 +28,11 @@ public class ControlerScript : MonoBehaviour
     {
         
     }
-
-    public void Test()
-    {
-        Debug.Log("XXX");
-    }
-
     public void Points(string name)
     {
-        if (order > 0)
+        if (order > 0)        //Jeśli nie jest to pierwszy dotknięty punkt
         {
-            if (pointsOrder[order-1] != name)
+            if (pointsOrder[order-1] != name)    //Jeżeli użytkownik wjechał na inny punkt niż był wcześniej (dzięki temu nie liczy np. że użytkownik dotknął punktu pierwszego ponad 50 razy)
             {
                 pointsOrder[order] = name;
                 timesOfPoints[order] = Time.time;
@@ -48,7 +42,7 @@ public class ControlerScript : MonoBehaviour
 
             }
         }
-        else
+        else              //Jeśli jest to pierwszy dotknięty punkt to zapisz jego nazwę i zwiększ licznik
         {
             pointsOrder[order] = name;
             timesOfPoints[order] = Time.time;
@@ -60,13 +54,10 @@ public class ControlerScript : MonoBehaviour
 
     public void CountWholeTime()
     {
-        //Debug.Log("0: "+timesOfPoints[0]+" ostatnie: "+ timesOfPoints[order-1]);
-        wholeTime = (timesOfPoints[order-1] - timesOfPoints[0]);
-
-        //Debug.Log((wholeTime));
+        wholeTime = (timesOfPoints[order-1] - timesOfPoints[0]);    //Obliczanie czasu jaki miną mniędzy dotknięciem pierwszego i ostatniego punktu
     }
 
-    public void CountTimeBetweenPoints()
+    public void CountTimeBetweenPoints()        //Obliczenie czasu pomiędzy dotknięciem dwóch punktów (ostatecznie niewykorzystywane)
     {
         var filteredTimes = timesOfPoints.Where(x => x != 0).ToArray();
         timesBetweenPoints = new float[filteredTimes.Length-1];
@@ -78,9 +69,6 @@ public class ControlerScript : MonoBehaviour
            
         }
         
-        //Debug.Log(numberOfLines);
-        //Debug.Log(timesBetweenPoints.Length);
-        //Debug.Log("0: "+timesBetweenPoints[0]+" 1: "+timesBetweenPoints[1]+" ostatnie: "+timesBetweenPoints[timesBetweenPoints.Length-1]);
     }
 
     //Przypisanie wartości do zmiennych
@@ -123,13 +111,13 @@ public class ControlerScript : MonoBehaviour
 
     }
     
-
+    //Przekazanie wartości zebranych w poziomie "Kwadrat - identyfikacja" do głównej metody
     public void EndOfSquareIdentification()
     {
         var orderOfPointsClicked = pointsOrder.Where(x => x != null).ToArray();
         MainControler.Instance.IdentificationSquare(orderOfPointsClicked, numberOfLines, wholeTime, timesBetweenPoints);
     }
-    
+    //Przekazanie wartości zebranych w poziomie "Krzyż - identyfikacja" do głównej metody
     public void EndOfCrossIdentification()
     {
         var orderOfPointsClicked = pointsOrder;

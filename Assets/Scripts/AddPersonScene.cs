@@ -20,7 +20,7 @@ public class AddPersonScene : MonoBehaviour
         string name = _field.text;
         MainControler.Instance.GetName(name);
         Debug.Log("Change scene");
-        SceneManager.LoadScene("Square", LoadSceneMode.Single);
+        SceneManager.LoadScene("Square", LoadSceneMode.Single);    //Zmiana sceny
 
     }
 }

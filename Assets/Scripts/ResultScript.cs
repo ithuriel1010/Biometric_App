@@ -10,7 +10,7 @@ public class ResultScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string result = MainControler.Instance.Check();
+        string result = MainControler.Instance.Check();        //Sprawdzenie wszystkich danych i wyświetlenie najbardziej prawdopodbnej osoby
         text.text = result;
     }
 
@@ -18,7 +18,7 @@ public class ResultScript : MonoBehaviour
     {
         SceneManager.LoadScene("MainScreen", LoadSceneMode.Single);
     }
-    // Update is called once per frame
+    
     void Update()
     {
         
